@@ -21,6 +21,53 @@ public class ProductDataStructure {
     public LinkedList<ProductNode> get_Products() {
         return products;
     }
+    
+    public void displayTop3Products() {
+    if (products.empty()) {
+        System.out.println("No products available!");
+        return;
+    }
+
+  
+    int count = 0;
+    products.findFirst();
+    while (true) {
+        count++;
+        if (products.last()) break;
+        products.findNext();
+    }
+
+   
+    ProductNode[] all = new ProductNode[count];
+
+   
+    products.findFirst();
+    int index = 0;
+    while (true) {
+        all[index++] = products.retrieve();
+        if (products.last()) break;
+        products.findNext();
+    }
+
+  
+    for (int i = 0; i < count - 1; i++) {
+        for (int j = 0; j < count - i - 1; j++) {
+            if (all[j].getAverageRating() < all[j + 1].getAverageRating()) {
+                ProductNode temp = all[j];
+                all[j] = all[j + 1];
+                all[j + 1] = temp;
+            }
+        }
+    }
+
+   
+    System.out.println("✦Top 3 Products by Rating ✦");
+    for (int i = 0; i < Math.min(3, count); i++) {
+        ProductNode p = all[i];
+        System.out.println(p.getName() + " has an average rating of " + p.getAverageRating());
+    }
+}
+
 
     public ProductNode SearchProductByid(int id) {
         if (products.empty()) {
