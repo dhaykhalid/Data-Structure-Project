@@ -1,0 +1,86 @@
+import java.io.File;
+import java.util.Scanner;
+
+public class CustomerDataStructure {
+    private LinkedList<CustomerNode> customers;
+   
+    public CustomerDataStructure() {
+        customers = new LinkedList<>();       
+    }
+
+    CustomerDataStructure(LinkedList<CustomerNode> inputCustomers) {
+      customers=inputCustomers;
+    }
+public LinkedList<CustomerNode> getCustomers()
+{
+return customers;
+}
+
+    public CustomerNode searchById(int id) {
+        if (customers.empty()) 
+            return null;
+        customers.findFirst();
+        while (true) {
+            if (customers.retrieve().getCustomerID() == id)
+                return customers.retrieve();
+            if (customers.last()) break;
+            customers.findNext();
+        }
+        return null;
+    }
+
+  
+    public void addCustomer(CustomerNode c) {
+        if (searchById(c.getCustomerID()) == null) {
+            customers.addLast(c);
+            System.out.println("customer: " + c.getName() + " is added successfully ");
+        } else {
+            System.out.println(" Customer with the ID " + c.getCustomerID() + " already exists");
+        }
+    }
+
+    public void displayAll() {
+        if (customers.empty()) {
+            System.out.println(" No customers found");
+            return;
+        }
+        System.out.println("✦ ──── All Customers ──── ✦");
+        customers.findFirst();
+        while (true) {
+            customers.retrieve().display();
+            if (customers.last()) 
+                break;
+            customers.findNext();
+        }
+    }
+public static CustomerNode ConvertStringToCustomer(String Line)
+    {
+    String a[]=Line.split(",");
+     CustomerNode p=new CustomerNode(Integer.parseInt(a[0].trim()),a[1].trim(),a[2].trim());
+    return p;
+    }
+  
+    public void loadCustomers(String fileName) {
+        try {
+            File f = new File(fileName);
+            Scanner read = new Scanner(f);
+            System.out.println("Reading file: " + fileName);
+            System.out.println("✦────────────────────────────────✦");
+            if (read.hasNextLine()) read.nextLine(); 
+
+            while (read.hasNextLine()) {
+                String line = read.nextLine().trim();
+                if (line.isEmpty()) continue;  
+                CustomerNode c = ConvertStringToCustomer(line);
+                customers.addLast(c);
+            }
+
+            read.close();
+            System.out.println("✦────────────────────────────────✦");
+            System.out.println("Customers loaded successfully \n");
+        } catch (Exception e) {
+            System.out.println("Error occur during loading the customers: " + e.getMessage());
+        }
+    }
+    
+}
