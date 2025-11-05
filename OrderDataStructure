@@ -19,7 +19,7 @@ public class OrderDataStructure{
         allCustomers=new CustomerDataStructure();
         allOrders = new LinkedList<>();      
     }
-public LinkedList<OrderNode>get_Orders()
+public LinkedList<OrderNode>getOrders()
 {
 return allOrders;
 }
