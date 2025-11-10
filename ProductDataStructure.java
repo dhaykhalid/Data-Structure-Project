@@ -1,9 +1,8 @@
 
-package datastructer;
+package csc112;
 
 
 
-import static datastructer.CustomerDataStructure.ConvertStringToCustomer;
 import java.io.File;
 import java.util.Scanner;
 
@@ -89,7 +88,7 @@ public class ProductDataStructure {
 
     public void addProduct(ProductNode p) {
         if (SearchProductByid(p.getProductId()) == null) { 
-            products.addLast(p);
+            products.insert(p);
             System.out.println("Product added: " + p.getName());
         } else {
             System.out.println("Product with ID " + p.getProductId() + " already exists!");
@@ -181,7 +180,7 @@ public class ProductDataStructure {
                 String line = read.nextLine().trim();
                 if (line.isEmpty()) continue;  
                 ProductNode p = convert_String_to_product(line);
-                    products.addLast(p);
+                    products.insert(p);
             }
 
             read.close();
