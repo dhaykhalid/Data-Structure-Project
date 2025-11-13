@@ -1,151 +1,154 @@
-package csc112;
+package ph1;
 
-import java.io.File;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
 
-public class OrderDataStructure {
-    private LinkedList<OrderNode> allOrders;
-    private CustomerDataStructure allCustomers;
-    static DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public OrderDataStructure() {
-        allCustomers = new CustomerDataStructure();
-        allOrders = new LinkedList<>();
-    }
+	import java.io.File;
+	import java.time.LocalDate;
+	import java.time.format.DateTimeFormatter;
+	import java.util.Scanner;
 
-    public LinkedList<OrderNode> getOrders() {
-        return allOrders;
-    }
+	public class OrderDataStructure {
+	    private LinkedList<OrderNode> allOrders;
+	    private CustomerDataStructure allCustomers;
+	    static DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public OrderNode searchOrderById(int id) {
-        if (allOrders.empty()) return null;
+	    public OrderDataStructure() {
+	        allCustomers = new CustomerDataStructure();
+	        allOrders = new LinkedList<>();
+	    }
 
-        allOrders.findFirst();
-        while (true) {
-            OrderNode o = allOrders.retrieve();
-            if (o.getOrderID() == id) return o;
-            if (allOrders.last()) break;
-            allOrders.findNext();
-        }
-        return null;
-    }
+	    public LinkedList<OrderNode> getOrders() {
+	        return allOrders;
+	    }
 
-    public void UpdateOrderState(int id, String newStatus) {
-        OrderNode order = searchOrderById(id);
-        if (order != null) {
-            order.setStatus(newStatus);
-            System.out.println("✅ Order " + id + " status updated to: " + newStatus);
-        } else {
-            System.out.println("❌ Order ID not found");
-        }
-    }
+	    public OrderNode searchOrderById(int id) {
+	        if (allOrders.empty()) return null;
 
-    public void removeOrder(int id) {
-        if (searchOrderById(id) != null) {
-            allOrders.remove();
-            System.out.println("✅ Order removed: " + id);
-        } else {
-            System.out.println("❌ Order ID not found");
-        }
-    }
+	        allOrders.findFirst();
+	        while (true) {
+	            OrderNode o = allOrders.retrieve();
+	            if (o.getOrderID() == id) return o;
+	            if (allOrders.last()) break;
+	            allOrders.findNext();
+	        }
+	        return null;
+	    }
 
-    public void addOrder(OrderNode ord) {
-        if (searchOrderById(ord.getOrderID()) == null) {
-            allOrders.insert(ord);
-            // ربط الطلب بالعميل
-            CustomerNode customer = allCustomers.searchById(ord.getCustomerID());
-            if (customer != null) {
-                customer.addOrder(ord);
-                System.out.println("✅ Order " + ord.getOrderID() + " linked to " + customer.getName());
-            }
-        }
-    }
+	    public void UpdateOrderState(int id, String newStatus) {
+	        OrderNode order = searchOrderById(id);
+	        if (order != null) {
+	            order.setStatus(newStatus);
+	            System.out.println(" Order " + id + " status updated to: " + newStatus);
+	        } else {
+	            System.out.println(" Order ID not found");
+	        }
+	    }
 
-    public static OrderNode convertStringToProduct(String Line) {
-        String a[] = Line.split(",");
-        int orderId = Integer.parseInt(a[0].trim().replace("\"", ""));
-        int customerId = Integer.parseInt(a[1].trim().replace("\"", ""));
-        String productIds = a[2].trim().replace("\"", "");
-        double totalPrice = Double.parseDouble(a[3]);
-        LocalDate date = LocalDate.parse(a[4], df);
-        String status = a[5].trim();
+	    public void removeOrder(int id) {
+	        if (searchOrderById(id) != null) {
+	            allOrders.remove();
+	            System.out.println(" Order removed: " + id);
+	        } else {
+	            System.out.println(" Order ID not found");
+	        }
+	    }
 
-        return new OrderNode(orderId, customerId, productIds, totalPrice, date, status);
-    }
+	    public void addOrder(OrderNode ord) {
+	        if (searchOrderById(ord.getOrderID()) == null) {
+	            allOrders.insert(ord);
+	            // ربط الطلب بالعميل
+	            CustomerNode customer = allCustomers.searchById(ord.getCustomerID());
+	            if (customer != null) {
+	                customer.addOrder(ord);
+	                System.out.println(" Order " + ord.getOrderID() + " linked to " + customer.getName());
+	            }
+	        }
+	    }
 
-    public void loadOrders(String fileName) {
-        try {
-            File f = new File(fileName);
-            Scanner read = new Scanner(f);
-            System.out.println("📁 Reading orders from: " + fileName);
-            
-            if (read.hasNextLine()) read.nextLine();
+	    public static OrderNode convertStringToProduct(String Line) {
+	        String a[] = Line.split(",");
+	        int orderId = Integer.parseInt(a[0].trim().replace("\"", ""));
+	        int customerId = Integer.parseInt(a[1].trim().replace("\"", ""));
+	        String productIds = a[2].trim().replace("\"", "");
+	        double totalPrice = Double.parseDouble(a[3]);
+	        LocalDate date = LocalDate.parse(a[4], df);
+	        String status = a[5].trim();
 
-            int loadedCount = 0;
-            while (read.hasNextLine()) {
-                String line = read.nextLine().trim();
-                if (!line.isEmpty()) {
-                    OrderNode ord = convertStringToProduct(line);
-                    addOrder(ord);
-                    loadedCount++;
-                }
-            }
+	        return new OrderNode(orderId, customerId, productIds, totalPrice, date, status);
+	    }
 
-            read.close();
-            System.out.println("✅ Orders loaded: " + loadedCount);
-        } catch (Exception e) {
-            System.out.println("❌ Error loading orders: " + e.getMessage());
-        }
-    }
+	    public void loadOrders(String fileName) {
+	        try {
+	            File f = new File(fileName);
+	            Scanner read = new Scanner(f);
+	            System.out.println(" Reading orders from: " + fileName);
+	            
+	            if (read.hasNextLine()) read.nextLine();
 
-    public void displayAllOrders() {
-        if (allOrders.empty()) {
-            System.out.println("📭 No orders found!");
-            return;
-        }
+	            int loadedCount = 0;
+	            while (read.hasNextLine()) {
+	                String line = read.nextLine().trim();
+	                if (!line.isEmpty()) {
+	                    OrderNode ord = convertStringToProduct(line);
+	                    addOrder(ord);
+	                    loadedCount++;
+	                }
+	            }
 
-        System.out.println("✦ All Orders ✦");
-        System.out.println("✦────────────────────────────────✦");
+	            read.close();
+	            System.out.println(" Orders loaded: " + loadedCount);
+	        } catch (Exception e) {
+	            System.out.println(" Error loading orders: " + e.getMessage());
+	        }
+	    }
 
-        allOrders.findFirst();
-        while (true) {
-            OrderNode o = allOrders.retrieve();
-            o.display();
-            if (allOrders.last()) break;
-            allOrders.findNext();
-        }
-    }
+	    public void displayAllOrders() {
+	        if (allOrders.empty()) {
+	            System.out.println("📭 No orders found!");
+	            return;
+	        }
 
-    public void displayAllOrders_between2dates(LocalDate d1, LocalDate d2) {
-        if (allOrders.empty()) {
-            System.out.println("📭 No orders found!");
-            return;
-        }
+	        System.out.println("✦ All Orders ✦");
+	        System.out.println("✦────────────────────────────────✦");
 
-        System.out.println("✦ Orders between " + d1 + " and " + d2 + " ✦");
-        System.out.println("✦────────────────────────────────✦");
+	        allOrders.findFirst();
+	        while (true) {
+	            OrderNode o = allOrders.retrieve();
+	            o.display();
+	            if (allOrders.last()) break;
+	            allOrders.findNext();
+	        }
+	    }
 
-        boolean found = false;
-        allOrders.findFirst();
-        while (true) {
-            OrderNode o = allOrders.retrieve();
-            if (o.getOrderDate().compareTo(d1) >= 0 && o.getOrderDate().compareTo(d2) <= 0) {
-                o.display();
-                found = true;
-            }
-            if (allOrders.last()) break;
-            allOrders.findNext();
-        }
+	    public void displayAllOrders_between2dates(LocalDate d1, LocalDate d2) {
+	        if (allOrders.empty()) {
+	            System.out.println("📭 No orders found!");
+	            return;
+	        }
 
-        if (!found) {
-            System.out.println("📭 No orders found in this date range");
-        }
-        System.out.println("✦────────────────────────────────✦");
-    }
+	        System.out.println("✦ Orders between " + d1 + " and " + d2 + " ✦");
+	        System.out.println("✦────────────────────────────────✦");
 
-    public void setAllCustomers(CustomerDataStructure cs) {
-        this.allCustomers = cs;
-    }
-}
+	        boolean found = false;
+	        allOrders.findFirst();
+	        while (true) {
+	            OrderNode o = allOrders.retrieve();
+	            if (o.getOrderDate().compareTo(d1) >= 0 && o.getOrderDate().compareTo(d2) <= 0) {
+	                o.display();
+	                found = true;
+	            }
+	            if (allOrders.last()) break;
+	            allOrders.findNext();
+	        }
+
+	        if (!found) {
+	            System.out.println("📭 No orders found in this date range");
+	        }
+	        System.out.println("✦────────────────────────────────✦");
+	    }
+
+	    public void setAllCustomers(CustomerDataStructure cs) {
+	        this.allCustomers = cs;
+	    }
+	}
+
