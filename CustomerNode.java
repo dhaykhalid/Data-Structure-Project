@@ -1,4 +1,6 @@
-package csc112;
+package ph1;
+
+
 
 public class CustomerNode {
     private int customerID;
@@ -33,7 +35,7 @@ public class CustomerNode {
         System.out.println("✦────────────────────────────────✦");
 
         if (orders.empty()) {
-            System.out.println("📭 No orders found");
+            System.out.println(" No orders found");
             System.out.println("✦────────────────────────────────✦");
             return;
         }
