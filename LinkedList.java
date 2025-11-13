@@ -1,4 +1,6 @@
-package csc112;
+package ph1;
+
+
 
 class Node<T> {
     public T data;
@@ -117,3 +119,5 @@ public class LinkedList<T> {
         return n;
     }      
 }
+
+
