@@ -1,4 +1,6 @@
-package csc112;
+package ph1;
+
+
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,14 +27,23 @@ public class ECommerceSystem {
         System.out.println("✦ Loading Data Files ✦");
         System.out.println(SEP);
 
+        // 1) Load customers and orders and products
+        allCustomers = new CustomerDataStructure();
+        allOrders    = new OrderDataStructure();
+        allProducts  = new ProductDataStructure();
+        allReviews   = new ReviewDataStructure();
+
         allCustomers.loadCustomers("customers.csv");
         allOrders.setAllCustomers(allCustomers);
         allOrders.loadOrders("orders.csv");
         allProducts.loadProducts("products.csv");
-        allReviews.loadReviews("reviews.csv");
-        
+
+        // 2) اربطي الريفيوز بالـ customers و products أول
         allReviews.setAllCustomers(allCustomers);
         allReviews.setAllProducts(allProducts);
+
+        // 3) بعدين حمّلي ملف الريفيوز عشان يلقى المنتجات جاهزة
+        allReviews.loadReviews("reviews.csv");
 
         System.out.println("✅ All files loaded successfully!");
         System.out.println(SEP);
