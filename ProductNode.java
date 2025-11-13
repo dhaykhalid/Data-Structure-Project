@@ -1,18 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package csc112;
-
-/**
- *
- * @author Dalia
- */
-
-
-
-import java.io.File;
-import java.util.Scanner;
+package ph1;
 
 public class ProductNode {
     private int productId;
@@ -42,6 +28,8 @@ public class ProductNode {
     public double getPrice() { return price; }
     public int getStock() { return stock; }
 
+    public void setProductId(int productId) { this.productId = productId; }
+    public void setName(String name) { this.name = name; }
     public void setPrice(double price) { this.price = price; }
     public void setStock(int stock) { this.stock = stock; }
 
@@ -50,19 +38,25 @@ public class ProductNode {
     }
 
     public double getAverageRating() {
-        if (reviews.empty()) return 0.0;
-        reviews.findFirst();
-        double sum = 0;
-        int count = 0;
-        while (true) {
-            sum += reviews.retrieve().getRating();
-            count++;
-            if (reviews.last()) break;
-            reviews.findNext();
-        }
-        return sum / count;
-    }
+    	if (reviews.empty()) {
+    	return 0.0;
+    	}
 
+    	int total = 0;
+    	int count = 0;
+    	// طريقة بسيطة ومضمونة
+    	reviews.findFirst();
+    	for (int i = 0; i < reviews.size(); i++) {
+    	total += reviews.retrieve().getRating();
+    	count++;
+    	if (i < reviews.size() - 1) reviews.findNext();
+    	}
+
+    	return (double) total / count;
+    	}
+        
+        
+    
     public void displayReviews() {
         System.out.println("Reviews for " + name + ":");
         if (reviews.empty()) {
