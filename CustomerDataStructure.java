@@ -1,4 +1,6 @@
-package csc112;
+package ph1;
+
+
 
 import java.io.File;
 import java.util.Scanner;
@@ -30,15 +32,15 @@ public class CustomerDataStructure {
     public void addCustomer(CustomerNode c) {
         if (searchById(c.getCustomerID()) == null) {
             customers.insert(c);
-            System.out.println("✅ Customer added: " + c.getName());
+            System.out.println(" Customer added: " + c.getName());
         } else {
-            System.out.println("❌ Customer ID already exists");
+            System.out.println(" Customer ID already exists");
         }
     }
 
     public void displayAll() {
         if (customers.empty()) {
-            System.out.println("📭 No customers found");
+            System.out.println(" No customers found");
             return;
         }
         System.out.println("✦ All Customers ✦");
@@ -54,7 +56,7 @@ public class CustomerDataStructure {
         try {
             File f = new File(fileName);
             Scanner read = new Scanner(f);
-            System.out.println("📁 Reading customers from: " + fileName);
+            System.out.println("Reading customers from: " + fileName);
             
             if (read.hasNextLine()) read.nextLine();
 
@@ -67,9 +69,9 @@ public class CustomerDataStructure {
             }
 
             read.close();
-            System.out.println("✅ Customers loaded successfully");
+            System.out.println(" Customers loaded successfully");
         } catch (Exception e) {
-            System.out.println("❌ Error loading customers: " + e.getMessage());
+            System.out.println(" Error loading customers: " + e.getMessage());
         }
     }
 
@@ -85,7 +87,7 @@ public class CustomerDataStructure {
     public void printOrderHistory(int id) {
         CustomerNode c = searchById(id);
         if (c == null) {
-            System.out.println("❌ Customer not found");
+            System.out.println(" Customer not found");
         } else {
             c.printOrderHistory();
         }
