@@ -1,0 +1,154 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package datastructer;
+
+class BSTnode<K extends Comparable<K>, T> {
+	public K key;
+	public T data;
+	public BSTnode<K, T> left, right;
+
+	public BSTnode(K key, T data) {
+		this.key = key;
+		this.data = data;
+		left = right = null;
+	}
+}
+public class BSTMap<K extends Comparable<K>, T>{
+	private BSTnode<K, T> root, current;
+	public BSTMap() {
+		current = root = null;
+	}
+          public BSTnode<K,T> getRoot()
+	{
+		return root;
+	}
+       
+  
+	public boolean full() {
+		return false;
+	}
+
+
+	
+	public boolean find(K key) {
+            BSTnode<K,T>p=root;
+            while(p!=null)
+            {
+             if(key.compareTo(p.key)==0) 
+             {
+                 current=p;
+                 return true;
+             }
+            else if(key.compareTo(p.key)<0) 
+                p=p.left;
+             else
+                p=p.right;
+            }
+		return false; 
+	}
+
+
+        public boolean insert(K key, T val) {
+		if (root == null) {
+			current = root = new BSTnode<K, T>(key, val);
+			return true;
+                }
+
+		BSTnode<K, T> p = root;
+		BSTnode<K, T> q = null;
+		while (p != null) {
+			int res = key.compareTo(p.key);
+                        {
+                            q = p;
+				if (res < 0) {
+					p = p.left;
+				} else {
+					p = p.right;
+				}
+			}
+		}
+		if (p != null) {
+			return false;
+		}
+
+		BSTnode<K, T> tmp = new BSTnode<K, T>(key, val);
+		if (key.compareTo(q.key) < 0) {
+			q.left = tmp;
+		} else {
+			q.right = tmp;
+		}
+		current = tmp;
+		return true;
+	}
+      
+
+	public boolean remove(K k) {
+		K k1 = k;
+		BSTnode<K, T> p = root;
+		BSTnode<K, T> q = null; 
+		while (p != null) {
+			int res = k1.compareTo(p.key);
+			if (res < 0) {
+				q = p;
+				p = p.left;
+			} else if (res > 0) {
+				q = p;
+				p = p.right;
+			} else { 
+
+				
+				if ((p.left != null) && (p.right != null)) { 
+																
+					
+					BSTnode<K, T> min = p.right;
+					q = p;
+					while (min.left != null) {
+						q = min;
+						min = min.left;
+					}
+					p.key = min.key;
+					p.data = min.data;
+					k1 = min.key;
+					p = min;
+				
+				}
+
+				
+				if (p.left != null) { 
+					p = p.left;
+				} else { 
+					p = p.right;
+				}
+
+				if (q == null) { 
+					root = p;
+				} else {
+					if (k1.compareTo(q.key) < 0) {
+						q.left = p;
+					} else {
+						q.right = p;
+					}
+				}
+				current = root;
+				return true;
+
+			}
+		}
+
+		return false; 
+	}  
+
+	  
+	    public boolean empty() {
+	        return root == null;
+	    }
+
+	   
+	    public T retrieve() {
+	        return (current != null) ? current.data : null;
+	    }
+
+	     
+}
