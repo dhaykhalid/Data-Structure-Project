@@ -1,18 +1,17 @@
-package ph1;
-
-
 
 public class CustomerNode {
     private int customerID;
     private String name;
     private String email;
     private LinkedList<OrderNode> orders;
+    private LinkedList<ReviewNode> reviews; // ⭐ NEW: reviews list
 
     public CustomerNode(int customerID, String name, String email) {
         this.customerID = customerID;
         this.name = name;
         this.email = email;
         this.orders = new LinkedList<>();
+        this.reviews = new LinkedList<>(); // ⭐ initialize it
     }
 
     public int getCustomerID() { return customerID; }
@@ -21,6 +20,20 @@ public class CustomerNode {
 
     public void addOrder(OrderNode order){
         orders.addLast(order);
+    }
+
+    public LinkedList<OrderNode> getOrders() {
+        return orders;   
+    }
+
+    
+    
+    public void addReview(ReviewNode review) {
+        reviews.addLast(review);
+    }
+
+    public LinkedList<ReviewNode> getReviews() {
+        return reviews;
     }
 
     public void display(){
@@ -35,7 +48,7 @@ public class CustomerNode {
         System.out.println("✦────────────────────────────────✦");
 
         if (orders.empty()) {
-            System.out.println("📭 No orders found");
+            System.out.println(" No orders found");
             System.out.println("✦────────────────────────────────✦");
             return;
         }
@@ -54,10 +67,5 @@ public class CustomerNode {
             orders.findNext();
         }
         System.out.println("✦────────────────────────────────✦");
-    }
-
-    // دالة addReview فارغة علشان ما يطلع error
-    public void addReview(ReviewNode review) {
-        // ما نحتاج نضيف مراجعات للعميل حالياً
     }
 }
